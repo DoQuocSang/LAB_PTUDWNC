@@ -18,8 +18,9 @@ namespace TatBlog.Data.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=PHUCNV;Database=TatBlog;
+            optionsBuilder.UseSqlServer(@"Server=LAPTOP-C4HORG37;TrustServerCertificate=True;Database=TatBlog;
                 Trusted_Connection=True;MultipleActiveResultSets=true");
+            //Data Source=LAPTOP-C4HORG37;Initial Catalog=TatBlog;Integrated Security=True
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
