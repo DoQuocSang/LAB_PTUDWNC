@@ -1,12 +1,13 @@
 ﻿using TatBlog.Core.Entities;
 using TatBlog.Data.Contexts;
 using TatBlog.Data.Seeders;
+using TatBlog.Services.Blogs;
 
 namespace TatBlog.WinApp
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             //Test danh sách tác giả
             //==================================================
@@ -30,21 +31,42 @@ namespace TatBlog.WinApp
 
             //Hiển thị bài viết
             //==================================================
+            //var context = new BlogDbContext();
+
+            //var posts = context.Posts
+            //    .Where(p => p.Published)
+            //    .OrderBy(p => p.Title)
+            //    .Select(p => new
+            //    {
+            //        Id = p.Id,
+            //        Title = p.Title,
+            //        ViewCount = p.ViewCount,
+            //        PostedDate = p.PostedDate,
+            //        Author = p.Author.FullName,
+            //        Category = p.Category.Name
+            //    })
+            //    .ToList();
+
+            //foreach (var post in posts)
+            //{
+            //    Console.WriteLine("ID        : {0}", post.Id);
+            //    Console.WriteLine("Title     : {0}", post.Title);
+            //    Console.WriteLine("View      : {0}", post.ViewCount);
+            //    Console.WriteLine("Date      : {0:MM/dd/yyyy}", post.PostedDate);
+            //    Console.WriteLine("Author    : {0}", post.Author);
+            //    Console.WriteLine("Category  : {0}", post.Category);
+            //    Console.WriteLine("".PadRight(80, '-'));
+            //}
+            //==================================================
+
+            //Hiển thị bài viết
+            //==================================================
             var context = new BlogDbContext();
 
-            var posts = context.Posts
-                .Where(p => p.Published)
-                .OrderBy(p => p.Title)
-                .Select(p => new
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    ViewCount = p.ViewCount,
-                    PostedDate = p.PostedDate,
-                    Author = p.Author.FullName,
-                    Category = p.Category.Name
-                })
-                .ToList();
+            IBlogRepository blogRepo = new BlogRepository(context);
+
+            //Tìm 3 bài viết được xem nhiều nhất
+            var posts = await blogRepo.GetPopularArticleAsync(3);
 
             foreach (var post in posts)
             {
@@ -62,21 +84,6 @@ namespace TatBlog.WinApp
 
 
 
-
-            //==================================================
-            //var context = new BlogDbContext();
-
-            //var authors = context.Posts.ToList();
-
-            //Console.WriteLine("{0,-4}{1,-30}",
-            //    "ID", "Name");
-
-            //foreach (var author in authors)
-            //{
-            //    Console.WriteLine("{0,-4}{1,-30}",
-            //        author.Id, author.Title);
-            //}
-            //==================================================
         }
     }
 }
