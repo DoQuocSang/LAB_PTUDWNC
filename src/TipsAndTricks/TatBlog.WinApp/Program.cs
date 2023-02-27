@@ -99,20 +99,20 @@ namespace TatBlog.WinApp
             //==================================================
 
 
-            //Tìm 3 bài viết được xem nhiều nhất
+            //Phân trang
             //==================================================
             var context = new BlogDbContext();
 
             IBlogRepository blogRepo = new BlogRepository(context);
 
             var pagingParams = new PagingParams
-            (
+            {
                 PageNumber = 1,
                 PageSize = 5,
                 SortColumn = "Name",
                 SortOrder = "DESC"
-            );
-
+            };
+                
             var tagList = await blogRepo.GetPagedTagsAsync(pagingParams);
 
             Console.WriteLine("{0,-5}{1,-50}{2,10}",
