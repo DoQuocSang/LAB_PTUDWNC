@@ -66,7 +66,9 @@ namespace TatBlog.Core.Collections
 
         public bool IsLastPage => PageIndex >=  (PageCount -1);
 
+
         #region IPagedList<T> Members
+
         public IEnumerator<T> GetEnumerator()
         {
             return _subset.GetEnumerator();
@@ -80,6 +82,7 @@ namespace TatBlog.Core.Collections
         public T this[int index] => _subset[index];
 
         public virtual int Count => _subset.Count;
+
         #endregion
     }
 }
