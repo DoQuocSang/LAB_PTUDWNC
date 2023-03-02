@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,6 +59,13 @@ namespace TatBlog.Services.Blogs
         public Task<IPagedList<TagItem>> GetPagedTagsAsync(
             IPagingParams pagingParams,
             CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        //Lấy danh sách các thẻ kèm theo số bài viết chứa thẻ đó
+        public Task<IList<TagItem>> GetTagsListAsync(
+           CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
