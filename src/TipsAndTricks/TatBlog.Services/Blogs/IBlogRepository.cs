@@ -69,5 +69,34 @@ namespace TatBlog.Services.Blogs
         {
             throw new NotImplementedException();
         }
+
+        //Lấy và phân trang danh sách chuyên mục
+        public Task<IPagedList<CategoryItem>> GetPagedCategoriesAsync(
+           IPagingParams pagingParams,
+           CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        //k.Lấy danh sách ngày theo N tháng tính từ tháng hiện tại
+        public List<DateTime> GetDateListByMonth(int num)
+        {
+            throw new NotImplementedException();
+        }
+
+        //k.Đếm số lượng bài viết trong N tháng gần nhất
+        public List<NumberPostByMonth> GetNumberPostByMonthAsync(int numMonth)
+        {
+            throw new NotImplementedException();
+        }
+
+        //Thay đổi trạng thái Published của một bài viết
+        public async Task ChangePublishedStatusAsync(
+            int postId,
+            CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+
+        }
     }
 }
