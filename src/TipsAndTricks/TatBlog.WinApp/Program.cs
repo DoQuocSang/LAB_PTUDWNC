@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Diagnostics;
 using System.Text;
@@ -587,7 +588,10 @@ namespace TatBlog.WinApp
             //==================================================
             //Console.Write("Nhập mã số của bài viết cần thay đổi trạng thái Published: ");
             //int temp = Convert.ToInt32(Console.ReadLine().Trim());
-            //var post = context.Posts.FirstOrDefault(p => p.Id == temp);
+            //var post = context.Set<Post>()
+            //    .Include(x => x.Author)
+            //    .Include(x => x.Category)
+            //    .FirstOrDefault(p => p.Id == temp);
 
             //if (post != null)
             //{
@@ -595,32 +599,32 @@ namespace TatBlog.WinApp
             //    Console.WriteLine("ID        : {0}", post.Id);
             //    Console.WriteLine("Title     : {0}", post.Title);
             //    Console.WriteLine("Date      : {0:MM/dd/yyyy}", post.PostedDate);
-            //    Console.WriteLine("Author    : {0}", post.Author);
-            //    Console.WriteLine("Category  : {0}", post.Category);
+            //    Console.WriteLine("Author    : {0}", post.Author.FullName);
+            //    Console.WriteLine("Category  : {0}", post.Category.Name);
             //    Console.WriteLine("Published  : {0}", post.Published);
             //    Console.WriteLine("".PadRight(80, '-'));
+
+            //    Console.WriteLine("=> Bạn có chắc chắn là muốn thay đổi trạng thái Published?");
+            //    Console.Write("=> ");
+
+            //    var answer = Console.ReadLine().Trim();
+            //    if (string.Equals(answer, "co", StringComparison.OrdinalIgnoreCase))
+            //    {
+            //        post.Published = !post.Published;
+            //        context.SaveChanges();
+            //        Console.WriteLine("=> Thông tin bài viết sau khi thay đổi:");
+            //        Console.WriteLine("ID        : {0}", post.Id);
+            //        Console.WriteLine("Title     : {0}", post.Title);
+            //        Console.WriteLine("Date      : {0:MM/dd/yyyy}", post.PostedDate);
+            //        Console.WriteLine("Author    : {0}", post.Author.FullName);
+            //        Console.WriteLine("Category  : {0}", post.Category.Name);
+            //        Console.WriteLine("Published  : {0}", post.Published);
+            //        Console.WriteLine("".PadRight(80, '-'));
+            //    }
             //}
             //else
             //{
             //    Console.WriteLine("=> Không tìm thấy bài viết cần tìm!");
-            //}
-
-            //Console.WriteLine("=> Bạn có chắc chắn là muốn thay đổi trạng thái Published?");
-            //Console.Write("=> ");
-
-            //var answer = Console.ReadLine().Trim();
-            //if (string.Equals(answer, "co", StringComparison.OrdinalIgnoreCase))
-            //{
-            //    post.Published = !post.Published;
-            //    context.SaveChanges();
-            //    Console.WriteLine("=> Thông tin bài viết sau khi thay đổi:");
-            //    Console.WriteLine("ID        : {0}", post.Id);
-            //    Console.WriteLine("Title     : {0}", post.Title);
-            //    Console.WriteLine("Date      : {0:MM/dd/yyyy}", post.PostedDate);
-            //    Console.WriteLine("Author    : {0}", post.Author);
-            //    Console.WriteLine("Category  : {0}", post.Category);
-            //    Console.WriteLine("Published  : {0}", post.Published);
-            //    Console.WriteLine("".PadRight(80, '-'));
             //}
             //==================================================
 
