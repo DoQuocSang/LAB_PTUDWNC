@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -129,6 +130,90 @@ namespace TatBlog.Services.Blogs
 
             return await tagQuery
                 .ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+        //Lấy danh sách các thẻ kèm theo số bài viết chứa thẻ đó
+        public async Task<IList<TagItem>> GetTagsListAsync(
+           CancellationToken cancellationToken = default)
+        {
+            IQueryable<Tag> tags = _context.Set<Tag>();
+
+            return await tags
+                .OrderBy(x => x.Name)
+                .Select(x => new TagItem()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlSlug = x.UrlSlug,
+                    Description = x.Description,
+                    PostCount = x.Posts.Count(p => p.Published)
+                })
+                .ToListAsync(cancellationToken);
+        }
+
+        //Lấy và phân trang danh sách chuyên mục
+        public async Task<IPagedList<CategoryItem>> GetPagedCategoriesAsync(
+           IPagingParams pagingParams,
+           CancellationToken cancellationToken = default)
+        {
+            var categoryQuery = _context.Set<Category>()
+                .Select(x => new CategoryItem()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlSlug = x.UrlSlug,
+                    Description = x.Description,
+                    PostCount = x.Posts.Count(p => p.Published)
+                });
+
+            return await categoryQuery
+                .ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+        //k.Lấy danh sách ngày theo N tháng tính từ tháng hiện tại
+        public List<DateTime> GetDateListByMonth(int num)
+        {
+            List<DateTime> result = new List<DateTime>();
+            for (int i = 0; i < num; i++)
+            {
+                result.Add(DateTime.Now.AddMonths(-i));
+            }
+            return result;
+        }
+
+        //k.Đếm số lượng bài viết trong N tháng gần nhất
+        public List<NumberPostByMonth> GetNumberPostByMonthAsync(int numMonth)
+        {
+            List<DateTime> list = GetDateListByMonth(numMonth);
+            List<NumberPostByMonth> result = new List<NumberPostByMonth>();
+
+            foreach (var item in list)
+            {
+                IQueryable<Post> postQuery = _context.Set<Post>();
+                postQuery = postQuery.Where(x => x.PostedDate.Month == item.Month && x.PostedDate.Year == item.Year);
+                if (postQuery.Count() > 0)
+                {
+                    NumberPostByMonth resultItem = new NumberPostByMonth();
+                    resultItem.Month = item.Month;
+                    resultItem.Year = item.Year;
+                    resultItem.PostCount = postQuery.Count();
+                    result.Add(resultItem);
+                }
+            }
+
+            return result;
+        }
+
+        //Thay đổi trạng thái Published của một bài viết
+        public async Task ChangePublishedStatusAsync(
+            int postId,
+            CancellationToken cancellationToken = default)
+        {
+            await _context.Set<Post>()
+                .Where(x => x.Id == postId)
+                .ExecuteUpdateAsync(p =>
+                p.SetProperty(x => x.Published, x => !x.Published),
+                cancellationToken);
         }
     }
 }

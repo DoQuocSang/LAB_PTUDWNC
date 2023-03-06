@@ -55,7 +55,7 @@ namespace TatBlog.Core.Collections
 
         public bool HasPreviousPage => PageIndex > 0;
 
-        public bool HasNextPage => (PageIndex < (PageIndex - 1));
+        public bool HasNextPage => (PageIndex < (PageCount - 1));
 
         public int FirstItemIndex => (PageIndex * PageSize) + 1;
 
