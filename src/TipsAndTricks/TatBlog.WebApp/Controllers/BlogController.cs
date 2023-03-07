@@ -14,13 +14,16 @@ namespace TatBlog.WebApp.Controllers
         }
 
         public async Task<IActionResult> Index(
+            [FromQuery(Name = "k")] string keyword = null,
             [FromQuery(Name = "p")] int pageNumber = 1,
             [FromQuery(Name = "ps")] int pageSize = 10)
         {
             //ViewBag.CurrentTime = DateTime.Now.ToString("HH:mm:ss");
             var postQuery = new PostQuery()
             {
-                PublishedOnly = true
+                PublishedOnly = true,
+
+                Keyword = keyword
             };
 
             var postsList = await _blogRepository
