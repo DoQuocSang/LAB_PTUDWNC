@@ -1,14 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TatBlog.Core.DTO;
+using TatBlog.Services.Blogs;
 
 namespace TatBlog.WebApp.Controllers
 {
     public class BlogController:Controller
     {
-        public IActionResult Index()
-        {
-            ViewBag.CurrentTime = DateTime.Now.ToString("HH:mm:ss");
+        private readonly IBlogRepository _blogRepository;
 
-            return View();
+        public BlogController(IBlogRepository blogRepository)
+        {
+            _blogRepository = blogRepository;
+        }
+
+        public async Task<IActionResult> Index(
+            [FromQuery(Name = "p")] int pageNumber = 1,
+            [FromQuery(Name = "ps")] int pageSize = 10)
+        {
+            //ViewBag.CurrentTime = DateTime.Now.ToString("HH:mm:ss");
+            var postQuery = new PostQuery()
+            {
+                PublishedOnly = true
+            };
+
+            var postsList = await _blogRepository
+                .GetPagedPostsAsync(postQuery, pageNumber, pageSize);
+
+            ViewBag.PostQuery = postQuery;
+
+            return View(postsList);
         }
 
         public IActionResult About()

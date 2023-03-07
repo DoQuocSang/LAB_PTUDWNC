@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TatBlog.Core.Contracts;
 using TatBlog.Core.DTO;
 using TatBlog.Core.Entities;
+using TatBlog.Services.Extensions;
 
 namespace TatBlog.Services.Blogs
 {
@@ -91,12 +92,44 @@ namespace TatBlog.Services.Blogs
         }
 
         //Thay đổi trạng thái Published của một bài viết
-        public async Task ChangePublishedStatusAsync(
+        public Task ChangePublishedStatusAsync(
             int postId,
             CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
+        }
 
+        //Lọc bài viết theo điều kiện
+        private IQueryable<Post> FilterPosts(PostQuery condition)
+        {
+            throw new NotImplementedException();
+        }
+
+        //Lấy danh sách bài viết theo truy vấn
+        public Task<IList<Post>> GetPostsAsync(
+        PostQuery condition,
+        int pageNumber,
+        int pageSize,
+        CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        //Đếm số lượng bài viết thỏa mãn điều kiện tìm kiếm
+        public Task<int> CountPostsAsync(
+        PostQuery condition, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        //Tìm kiếm và phân trang bài viết
+        public Task<IPagedList<Post>> GetPagedPostsAsync(
+            PostQuery condition,
+            int pageNumber = 1,
+            int pageSize = 10,
+            CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
     }
 }
