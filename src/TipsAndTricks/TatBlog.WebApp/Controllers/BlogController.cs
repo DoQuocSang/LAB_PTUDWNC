@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TatBlog.Core.DTO;
 using TatBlog.Services.Blogs;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace TatBlog.WebApp.Controllers
 {
@@ -28,6 +29,40 @@ namespace TatBlog.WebApp.Controllers
 
             var postsList = await _blogRepository
                 .GetPagedPostsAsync(postQuery, pageNumber, pageSize);
+
+            ViewBag.PostQuery = postQuery;
+
+            return View(postsList);
+        }
+
+        public async Task<IActionResult> Category(
+            string slug, 
+            int pageNumber = 1)
+        {
+            var postQuery = new PostQuery()
+            {
+                CategorySlug = slug
+            };
+
+            var postsList = await _blogRepository
+                .GetPagedPostsAsync(postQuery, pageNumber);
+
+            ViewBag.PostQuery = postQuery;
+
+            return View(postsList);
+        }
+
+        public async Task<IActionResult> Author(
+            string slug,
+            int pageNumber = 1)
+        {
+            var postQuery = new PostQuery()
+            {
+                AuthorSlug = slug
+            };
+
+            var postsList = await _blogRepository
+                .GetPagedPostsAsync(postQuery, pageNumber);
 
             ViewBag.PostQuery = postQuery;
 
