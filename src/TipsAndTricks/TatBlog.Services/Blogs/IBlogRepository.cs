@@ -113,6 +113,12 @@ namespace TatBlog.Services.Blogs
             throw new NotImplementedException();
         }
 
+        //Lấy danh sách chuyên mục
+        public Task<IList<AuthorItem>> GetAuthorsAsync(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
         //Lấy danh sách bài viết theo truy vấn
         public Task<IList<Post>> GetPostsAsync(
         PostQuery condition,
