@@ -12,7 +12,8 @@
                 <a asp-controller="Blog"
                     asp-action="Category"
                     asp-route-slug="@item.UrlSlug"
-                    title="@item.Description">
+                    title="@item.Description"
+                    class="no-underline">
                     @item.Name
                     <span>
                         (@item.PostCount)

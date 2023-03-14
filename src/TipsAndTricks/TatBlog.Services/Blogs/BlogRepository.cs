@@ -204,6 +204,41 @@ namespace TatBlog.Services.Blogs
             return result;
         }
 
+        //Tìm bài viết theo id
+        public async Task<Post> GetPostByIdAsync(
+        int postId, bool includeDetails = false,
+        CancellationToken cancellationToken = default)
+        {
+            if (!includeDetails)
+            {
+                return await _context.Set<Post>().FindAsync(postId);
+            }
+
+            return await _context.Set<Post>()
+                .Include(x => x.Category)
+                .Include(x => x.Author)
+                .Include(x => x.Tags)
+                .FirstOrDefaultAsync(x => x.Id == postId, cancellationToken);
+        }
+
+        //Lấy danh sách các bài viết theo chủ đề
+        //public async Task<IList<Post>> GetPostListByCategoryAsync(
+        //   CancellationToken cancellationToken = default)
+        //{
+        //    IQueryable<Post> posts = _context.Set<Post>();
+
+        //    return await posts
+        //        .OrderBy(x => x.Title)
+        //        .Select(x => new Post()
+        //        {
+        //            Id = x.Id,
+        //            Title = x.Title,
+        //            UrlSlug = x.UrlSlug,
+        //            Description = x.Description,
+        //        })
+        //        .ToListAsync(cancellationToken);
+        //}
+
         //Thay đổi trạng thái Published của một bài viết
         public async Task ChangePublishedStatusAsync(
             int postId,

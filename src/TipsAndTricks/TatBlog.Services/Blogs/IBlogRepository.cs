@@ -91,6 +91,14 @@ namespace TatBlog.Services.Blogs
             throw new NotImplementedException();
         }
 
+        //Tìm bài viết theo id
+        public async Task<Post> GetPostByIdAsync(
+            int postId, bool includeDetails = false,
+            CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
         //Thay đổi trạng thái Published của một bài viết
         public Task ChangePublishedStatusAsync(
             int postId,

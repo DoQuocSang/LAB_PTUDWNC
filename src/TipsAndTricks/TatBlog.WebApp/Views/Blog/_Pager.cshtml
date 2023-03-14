@@ -17,6 +17,15 @@
     {
         actionName = "Tag";
     }
+
+    if (!string.IsNullOrWhiteSpace(postQuery.CategorySlug))
+    {
+        slug = postQuery.CategorySlug;
+    }
+    else if (!string.IsNullOrWhiteSpace(postQuery.AuthorSlug))
+    {
+        slug = postQuery.AuthorSlug;
+    }
 }
 
 @if(Model.PageCount > 1)
@@ -29,6 +38,7 @@
                 asp-route-slug="@slug"
                 asp-route-k="@postQuery.Keyword"
                 asp-route-p="@(Model.PageNumber - 1)"
+                asp-route-pageNumber="@(Model.PageNumber - 1)"
                 asp-route-ps="@Model.PageSize"
                 class="btn btn-info">
                 <i class="fa fa-arrow-left"></i>
@@ -52,6 +62,7 @@
                 asp-route-slug="@slug"
                 asp-route-k="@postQuery.Keyword"
                 asp-route-p="@(Model.PageNumber + 1)"
+                asp-route-pageNumber="@(Model.PageNumber + 1)"
                 asp-route-ps="@Model.PageSize"
                 class="btn btn-info">
                     <i class="fa fa-arrow-right"></i>
