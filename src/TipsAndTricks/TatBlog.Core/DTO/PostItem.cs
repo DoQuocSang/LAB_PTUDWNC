@@ -25,5 +25,7 @@ namespace TatBlog.Core.DTO
         public Category Category { get; set; }
         public Author Author { get; set; }
         public int TagCount { get; set; }
+        public IList<string> Tags { get; set; }
+        public IList<string> CategoryName { get; set; }
     }
 }
