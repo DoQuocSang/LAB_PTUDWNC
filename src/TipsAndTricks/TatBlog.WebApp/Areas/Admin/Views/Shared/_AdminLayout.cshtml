@@ -12,19 +12,12 @@
     @await RenderSectionAsync("styles", required: false)
 </head>
 <body>
-    <partial name="_Header"></partial>
+    <partial name="_Navbar"></partial>
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-9">
-                @RenderBody()
-            </div>
-            <div class="col-3 border-start">
-                <partial name="_Sidebar"></partial>
-            </div>
-        </div>
+        @RenderBody()
     </div>
-    
+
     <footer class="border-top footer text-muted">
         <div class="container-fluid text-center">
             &copy; 2023 - Tips & Tricks Blog
@@ -33,7 +26,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/main.js"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("scripts", required: false)
 </body>
