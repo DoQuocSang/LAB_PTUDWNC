@@ -11,6 +11,7 @@ using TatBlog.Data.Contexts;
 using TatBlog.Data.Seeders;
 using TatBlog.Services.Blogs;
 using TatBlog.WinApp;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TatBlog.WinApp
 {

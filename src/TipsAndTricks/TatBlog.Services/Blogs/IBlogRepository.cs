@@ -32,7 +32,7 @@ namespace TatBlog.Services.Blogs
         }
 
         //Kiểm tra tên định danh bài viết đã có hay chưa
-        public Task<bool> IPostSlugExistedAsync(
+        public Task<bool> IsPostSlugExistedAsync(
             int postId,
             string slug,
             CancellationToken cancellationToken = default)
@@ -92,7 +92,7 @@ namespace TatBlog.Services.Blogs
         }
 
         //Tìm bài viết theo id
-        public async Task<Post> GetPostByIdAsync(
+        public Task<Post> GetPostByIdAsync(
             int postId, bool includeDetails = false,
             CancellationToken cancellationToken = default)
         {
@@ -142,6 +142,27 @@ namespace TatBlog.Services.Blogs
             int pageNumber = 1,
             int pageSize = 10,
             CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        //Lấy danh sách thẻ
+        public Task<Tag> GetTagAsync(
+        string slug, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        //private string GenerateSlug(string text)
+        //{
+        //    throw new NotImplementedException();
+
+        //}
+
+        //Tạo mới hoặc cập nhật bài viết theo id 
+        public Task<Post> CreateOrUpdatePostAsync(
+        Post post, IEnumerable<string> tags,
+        CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

@@ -44,7 +44,8 @@
                         @post.Author.FullName
                     </td>
                     <td>
-                        @post.Category.Name
+                        @post.Tags.Count
+                        @*@post.Category.Name*@
                     </td>
                     <td>
                         @(post.Published ? "Có" : "Không")
