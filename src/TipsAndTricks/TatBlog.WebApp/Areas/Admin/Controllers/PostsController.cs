@@ -8,23 +8,28 @@ using TatBlog.Core.Entities;
 using TatBlog.Services.Blogs;
 using TatBlog.Services.Media;
 using TatBlog.WebApp.Areas.Admin.Models;
+using TatBlog.WebApp.Validations;
 
 namespace TatBlog.WebApp.Areas.Admin.Controllers
 {
     public class PostsController : Controller
     {
+        private readonly ILogger<PostsController> _logger;
         private readonly IBlogRepository _blogRepository;
         private readonly IMediaManager _mediaManager;
         private readonly IMapper _mapper;
-
+        private readonly IValidator<PostEditModel> _postValidator;
         public PostsController(
             IBlogRepository blogRepository, 
             IMediaManager mediaManager,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<PostsController> logger)
         {
             _blogRepository = blogRepository;
             _mediaManager = mediaManager;
             _mapper = mapper;
+            _postValidator = new PostValidator(blogRepository);
+            _logger = logger;
         }
 
         private async Task PopulatePostFilterModelAsync(PostFilterModel model)
@@ -73,11 +78,16 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             //    Year = model.Year,
             //    Month = model.Month
             //};
+            _logger.LogInformation("Tạo điều kiện truy vấn");
 
             var postQuery = _mapper.Map<PostQuery>(model);
 
+            _logger.LogInformation("Lấy danh sách bài viết từ CSDL");
+
             ViewBag.PostsList = await _blogRepository
                 .GetPagedPostsAsync(postQuery, 1, 10);
+
+            _logger.LogInformation("Chuẩn bị dữ liệu cho ViewModel");
 
             await PopulatePostFilterModelAsync(model);
 
@@ -100,13 +110,67 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(
-            IValidator<PostEditModel> postValidator,
-            PostEditModel model)
-        {
-            var validationResult = await postValidator.ValidateAsync(model);
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(
+        //    IValidator<PostEditModel> postValidator,
+        //    PostEditModel model)
+        //{
+        //    var validationResult = await postValidator.ValidateAsync(model);
 
+        //    if (!validationResult.IsValid)
+        //    {
+        //        validationResult.AddToModelState(ModelState);
+        //    }
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        await PopulatePostEditModelAsync(model);
+        //        return View(model);
+        //    }
+
+        //    var post = model.Id > 0
+        //        ? await _blogRepository.GetPostByIdAsync(model.Id)
+        //        : null;
+
+        //    if (post == null)
+        //    {
+        //        post = _mapper.Map<Post>(model);
+
+        //        post.Id = 0;
+        //        post.PostedDate = DateTime.Now;
+        //    }
+        //    else
+        //    {
+        //        _mapper.Map(model, post);
+
+        //        post.Category = null;
+        //        post.ModifiedDate = DateTime.Now;
+        //    }
+
+        //    if (model.ImageFile?.Length > 0)
+        //    {
+        //        var newImagePath = await _mediaManager.SaveFileAsync(
+        //            model.ImageFile.OpenReadStream(),
+        //            model.ImageFile.FileName,
+        //            model.ImageFile.ContentType);
+
+        //        if (!string.IsNullOrWhiteSpace(newImagePath))
+        //        {
+        //            await _mediaManager.DeleteFileAsync(post.ImageUrl);
+        //            post.ImageUrl = newImagePath;
+        //        }
+        //    }
+
+        //    await _blogRepository.CreateOrUpdatePostAsync(
+        //        post, model.GetSelectedTags());
+
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(PostEditModel model)
+        {
+            var validationResult = await _postValidator.ValidateAsync(model);
             if (!validationResult.IsValid)
             {
                 validationResult.AddToModelState(ModelState);
@@ -119,40 +183,37 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             }
 
             var post = model.Id > 0
-                ? await _blogRepository.GetPostByIdAsync(model.Id)
-                : null;
+                ? await _blogRepository.GetPostByIdAsync(model.Id) : null;
+
 
             if (post == null)
             {
                 post = _mapper.Map<Post>(model);
-
                 post.Id = 0;
                 post.PostedDate = DateTime.Now;
             }
             else
             {
                 _mapper.Map(model, post);
-
                 post.Category = null;
                 post.ModifiedDate = DateTime.Now;
             }
 
+            // Nếu người dùng có upload hình ảnh minh họa cho bài viết
             if (model.ImageFile?.Length > 0)
             {
-                var newImagePath = await _mediaManager.SaveFileAsync(
-                    model.ImageFile.OpenReadStream(),
-                    model.ImageFile.FileName,
-                    model.ImageFile.ContentType);
+                // Thì thực hiện lưu vào thư mục uploads
+                var newImagePath = await _mediaManager.SaveFileAsync(model.ImageFile.OpenReadStream(), model.ImageFile.FileName, model.ImageFile.ContentType);
 
-                if (!string.IsNullOrWhiteSpace(newImagePath))
+                // Nếu thành công, xóa hình ảnh cũ nếu có
+                if (!string.IsNullOrEmpty(newImagePath))
                 {
                     await _mediaManager.DeleteFileAsync(post.ImageUrl);
                     post.ImageUrl = newImagePath;
                 }
             }
 
-            await _blogRepository.CreateOrUpdatePostAsync(
-                post, model.GetSelectedTags());
+            await _blogRepository.CreateOrUpdatePostAsync(post, model.GetSelectedTags());
 
             return RedirectToAction(nameof(Index));
         }
