@@ -57,10 +57,6 @@ namespace TatBlog.WebApp.Areas.Admin.Models
         //[Required(ErrorMessage = "Vui lòng nhập tên thẻ")]
         public string SelectedTags { get; set; }
 
-        public PostEditModel()
-        {
-            
-        }
 
         public IEnumerable<SelectListItem> AuthorList { get; set; }
 
