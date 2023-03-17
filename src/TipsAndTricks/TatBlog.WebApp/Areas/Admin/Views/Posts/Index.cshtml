@@ -48,7 +48,16 @@
                         @*@post.Category.Name*@
                     </td>
                     <td>
-                        @(post.Published ? "Có" : "Không")
+                        @{
+                            var checkValue = (post.Published) ? true : false;
+                        }
+
+                        @if (checkValue)
+                        {
+                            <input type="checkbox" checked="true" class="form-check-input" />
+                        }else{
+                            <input type="checkbox" class="form-check-input" />
+                        }
                     </td>
                 </tr>
             }
@@ -61,4 +70,6 @@ else
         Không tìm thấy bài viết nào
     </h1>
 }
+
+<partial name="_Pager" model="@postsList" />
 

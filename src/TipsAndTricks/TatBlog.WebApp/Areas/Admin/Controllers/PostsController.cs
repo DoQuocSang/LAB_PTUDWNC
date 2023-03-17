@@ -3,12 +3,14 @@ using FluentValidation.AspNetCore;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Drawing.Printing;
 using TatBlog.Core.DTO;
 using TatBlog.Core.Entities;
 using TatBlog.Services.Blogs;
 using TatBlog.Services.Media;
 using TatBlog.WebApp.Areas.Admin.Models;
 using TatBlog.WebApp.Validations;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace TatBlog.WebApp.Areas.Admin.Controllers
 {
@@ -68,7 +70,11 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             });
         }
 
-        public async Task<IActionResult> Index(PostFilterModel model)
+        //[Area("Admin")]
+        public async Task<IActionResult> Index(
+            PostFilterModel model,
+            int pageNumber = 1,
+            int pageSize = 10)
         {
             //var postQuery = new PostQuery()
             //{
@@ -85,7 +91,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             _logger.LogInformation("Lấy danh sách bài viết từ CSDL");
 
             ViewBag.PostsList = await _blogRepository
-                .GetPagedPostsAsync(postQuery, 1, 10);
+                .GetPagedPostsAsync(postQuery, pageNumber, pageSize);
 
             _logger.LogInformation("Chuẩn bị dữ liệu cho ViewModel");
 
@@ -228,6 +234,46 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             return slugExisted
                 ? Json("$Slug '{urlSlug}' đã được sử dụng")
                 :Json(true);
+        }
+
+        public async Task<IActionResult> ChangePublished(Post model)
+        {
+          
+
+            var post = model.Id > 0
+                ? await _blogRepository.GetPostByIdAsync(model.Id) : null;
+
+
+            if (post == null)
+            {
+                post = _mapper.Map<Post>(model);
+                post.Id = 0;
+                post.PostedDate = DateTime.Now;
+            }
+            else
+            {
+                _mapper.Map(model, post);
+                post.Category = null;
+                post.ModifiedDate = DateTime.Now;
+            }
+
+            // Nếu người dùng có upload hình ảnh minh họa cho bài viết
+            if (model.ImageFile?.Length > 0)
+            {
+                // Thì thực hiện lưu vào thư mục uploads
+                var newImagePath = await _mediaManager.SaveFileAsync(model.ImageFile.OpenReadStream(), model.ImageFile.FileName, model.ImageFile.ContentType);
+
+                // Nếu thành công, xóa hình ảnh cũ nếu có
+                if (!string.IsNullOrEmpty(newImagePath))
+                {
+                    await _mediaManager.DeleteFileAsync(post.ImageUrl);
+                    post.ImageUrl = newImagePath;
+                }
+            }
+
+            await _blogRepository.CreateOrUpdatePostAsync(post, model.GetSelectedTags());
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
