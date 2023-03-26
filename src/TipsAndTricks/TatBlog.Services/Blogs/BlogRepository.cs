@@ -262,15 +262,26 @@ namespace TatBlog.Services.Blogs
         //}
 
         //Thay đổi trạng thái Published của một bài viết
-        public async Task ChangePublishedStatusAsync(
-            int postId,
+        //public async Task ChangePublishedStatusAsync(
+        //    int postId,
+        //    CancellationToken cancellationToken = default)
+        //{
+        //    await _context.Set<Post>()
+        //        .Where(x => x.Id == postId)
+        //        .ExecuteUpdateAsync(p =>
+        //        p.SetProperty(x => x.Published, x => !x.Published),
+        //        cancellationToken);
+        //}
+
+        //Thay đổi trạng thái published của 1 bài viết
+        public async Task TogglePublishedFlagAsync(
+            int id, 
             CancellationToken cancellationToken = default)
         {
-            await _context.Set<Post>()
-                .Where(x => x.Id == postId)
-                .ExecuteUpdateAsync(p =>
-                p.SetProperty(x => x.Published, x => !x.Published),
-                cancellationToken);
+            var post = await _context.Set<Post>().FindAsync(id);
+
+            post.Published = !post.Published;
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
         //Lọc bài viết theo điều kiện
@@ -441,53 +452,12 @@ namespace TatBlog.Services.Blogs
             return post;
         }
 
-        public async Task<Post> UpdatePublishedPostAsync(
-                    Post post,
-                    CancellationToken cancellationToken = default)
+        public async Task DeletePostAsync(
+                int id, CancellationToken cancellationToken = default)
         {
-            if (post.Id > 0)
-            {
-                await _context.Entry(post).Collection(x => x.Tags).LoadAsync(cancellationToken);
-            }
-            else
-            {
-                post.Tags = new List<Tag>();
-            }
-
-            var validTags = tags.Where(x => !string.IsNullOrWhiteSpace(x))
-                .Select(x => new
-                {
-                    Name = x,
-                    Slug = x.GenerateSlug()
-                })
-                .GroupBy(x => x.Slug)
-                .ToDictionary(g => g.Key, g => g.First().Name);
-
-
-            foreach (var kv in validTags)
-            {
-                if (post.Tags.Any(x => string.Compare(x.UrlSlug, kv.Key, StringComparison.InvariantCultureIgnoreCase) == 0)) continue;
-
-                var tag = await GetTagAsync(kv.Key, cancellationToken) ?? new Tag()
-                {
-                    Name = kv.Value,
-                    Description = kv.Value,
-                    UrlSlug = kv.Key
-                };
-
-                post.Tags.Add(tag);
-            }
-
-            post.Tags = post.Tags.Where(t => validTags.ContainsKey(t.UrlSlug)).ToList();
-
-            if (post.Id > 0)
-                _context.Update(post);
-            else
-                _context.Add(post);
-
+            var post = await _context.Set<Post>().FindAsync(id);
+            _context.Set<Post>().Remove(post);
             await _context.SaveChangesAsync(cancellationToken);
-
-            return post;
         }
     }
 }

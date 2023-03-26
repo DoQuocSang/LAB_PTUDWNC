@@ -99,13 +99,13 @@ namespace TatBlog.Services.Blogs
             throw new NotImplementedException();
         }
 
-        //Thay đổi trạng thái Published của một bài viết
-        Task ChangePublishedStatusAsync(
-            int postId,
-            CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        ////Thay đổi trạng thái Published của một bài viết
+        //Task ChangePublishedStatusAsync(
+        //    int postId,
+        //    CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //Lọc bài viết theo điều kiện
         IQueryable<Post> FilterPosts(PostQuery condition)
@@ -163,6 +163,20 @@ namespace TatBlog.Services.Blogs
         Task<Post> CreateOrUpdatePostAsync(
         Post post, IEnumerable<string> tags,
         CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        //Thay đổi trạng thái published của 1 bài viết
+        Task TogglePublishedFlagAsync(
+             int postId,
+             CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task DeletePostAsync(
+                int id, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

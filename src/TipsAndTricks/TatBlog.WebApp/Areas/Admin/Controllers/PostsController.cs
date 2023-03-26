@@ -236,43 +236,15 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
                 :Json(true);
         }
 
-        public async Task<IActionResult> ChangePublished(Post model)
+        public async Task<IActionResult> ChangePostPublishedState(int id)
         {
-          
+            await _blogRepository.TogglePublishedFlagAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
 
-            var post = model.Id > 0
-                ? await _blogRepository.GetPostByIdAsync(model.Id) : null;
-
-
-            if (post == null)
-            {
-                post = _mapper.Map<Post>(model);
-                post.Id = 0;
-                post.PostedDate = DateTime.Now;
-            }
-            else
-            {
-                _mapper.Map(model, post);
-                post.Category = null;
-                post.ModifiedDate = DateTime.Now;
-            }
-
-            // Nếu người dùng có upload hình ảnh minh họa cho bài viết
-            if (model.ImageFile?.Length > 0)
-            {
-                // Thì thực hiện lưu vào thư mục uploads
-                var newImagePath = await _mediaManager.SaveFileAsync(model.ImageFile.OpenReadStream(), model.ImageFile.FileName, model.ImageFile.ContentType);
-
-                // Nếu thành công, xóa hình ảnh cũ nếu có
-                if (!string.IsNullOrEmpty(newImagePath))
-                {
-                    await _mediaManager.DeleteFileAsync(post.ImageUrl);
-                    post.ImageUrl = newImagePath;
-                }
-            }
-
-            await _blogRepository.CreateOrUpdatePostAsync(post, model.GetSelectedTags());
-
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            await _blogRepository.DeletePostAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }
