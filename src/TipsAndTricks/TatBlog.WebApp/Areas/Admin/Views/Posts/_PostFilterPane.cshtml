@@ -49,8 +49,22 @@
     </div>
 
     <div class="col-auto">
+        <input type="checkbox" 
+                class="form-check-input"
+                asp-for="NotPublished" />
+        <label class="form-check-label" asp-for="NotPublished">Chưa xuất bản</label>
+    </div>
+
+    <div class="col-auto">
         <button type="submit" class="btn btn-primary">Tìm/lọc</button>
         
+        <a class="btn btn-danger"
+           asp-area="Admin"
+           asp-controller="Posts"
+           asp-action="Index">
+            Bỏ lọc
+        </a>
+
         <a class="btn btn-success"
            asp-area="Admin"
            asp-controller="Posts"

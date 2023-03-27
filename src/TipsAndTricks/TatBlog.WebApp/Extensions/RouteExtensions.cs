@@ -33,7 +33,13 @@
             endpoints.MapControllerRoute(
                name: "admin-area",
                pattern: "admin/{controller=Dashboard}/{action=Index}/{id?}",
-               defaults: new { area = "Admin" });
+               defaults: new { area = "Admin" },
+               constraints: new { area = "Admin" });
+
+            endpoints.MapAreaControllerRoute(
+                name: "admin",
+                areaName: "admin",
+                pattern: "admin/{controller=Dashboard}/{action=Index}/{id?}");
 
             endpoints.MapControllerRoute(
                 name: "default",

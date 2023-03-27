@@ -1,8 +1,68 @@
 ﻿@{
     ViewData["PageTitle"] = "Bảng điều khiển";
+    var tagsList = ViewBag.TagsList as IPagedList<Tag>;
 }
 
 <h1>
     Đây là khu vực thẻ
 </h1>
+
+
+<partial name="_TagFilterPane" model="Model" />
+
+@if (tagsList != null && tagsList.Count > 0)
+{
+    <table class="table table-responsive table-striped">
+        <thead>
+            <tr>
+                <th>Tên thẻ</th>
+                <th>Số bài viết</th>
+                <th>Xóa thẻ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tag in tagsList)
+            {
+                <tr>
+                    <td>
+                        <a class="text-bold"
+                           asp-area="Admin"
+                           asp-controller="Tags"
+                           asp-action="Edit"
+                           asp-route-id="@tag.Id">
+                            @tag.Name
+                        </a>
+
+                        <p class="text-muted">
+                            @tag.Description
+                        </p>
+                    </td>
+                    <td>
+                        @tag.Posts.Count
+                    </td>
+
+                    <td>
+                        <a asp-area="Admin"
+                           asp-controller="Tags"
+                           asp-action="DeleteTag"
+                           asp-route-id="@tag.Id"
+                           class="btn btn-danger"
+                           OnClick="return confirm('Bạn có chắc chắn là muốn xóa thẻ này không')">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1 class="text-danger">
+        Không tìm thấy thẻ nào
+    </h1>
+}
+
+<partial name="_Pager" model="@tagsList" />
+
 

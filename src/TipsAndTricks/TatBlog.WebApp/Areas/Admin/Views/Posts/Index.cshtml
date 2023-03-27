@@ -21,6 +21,7 @@
                 <th>Tác giả</th>
                 <th>Chủ đề</th>
                 <th>Xuất bản</th>
+                <th>Xóa bài viết</th>
             </tr>
         </thead>
         <tbody>
@@ -48,7 +49,83 @@
                         @*@post.Category.Name*@
                     </td>
                     <td>
-                        @(post.Published ? "Có" : "Không")
+                        @{
+                            var cssState = "";
+                            if (post.Published)
+                            {
+                                cssState = "btn-success";
+                            }
+                            else
+                            {
+                                cssState = "btn-warning";
+                            }
+                        }
+
+                        <a  asp-area="Admin"
+                            asp-controller="Posts"
+                            asp-action="ChangePostPublishedState"
+                            asp-route-id="@post.Id"
+                            class="btn @cssState">
+                            @(post.Published ? "Có" : "Không")
+                        </a>
+                    </td>
+
+                     <td>
+                        @*<a  asp-area="Admin"
+                            asp-controller="Posts"
+                            asp-action="ChangePostPublishedState"
+                            asp-route-id="@post.Id"
+                            class="btn btn-danger"
+                            OnClick="confirm('Bạn có chắc chắn là muốn xóa bài viết này không');">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>*@
+                        
+
+                       @* <a class="btn btn-danger" 
+                           onclick="return Confirmmessage()"
+                           asp-area="Admin"
+                           asp-controller="Posts"
+                           asp-action="DeletePost"
+                           asp-route-id="@post.Id"
+                           asp-route-deletePostConfirm="@deletePostConfirm">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>*@
+
+                        @*<form asp-area="Admin"
+                           asp-controller="Posts"
+                           asp-action="DeletePost"
+                           AutoPostBack="True"
+                           asp-route-id="@post.Id"
+                           asp-route-deletePostConfirm="@deletePostConfirm">
+                          <input class="btn btn-danger" 
+                              type="submit" onClick="return Confirmmessage();" />
+                        </form>*@
+
+                       @* <a asp-area="Admin"
+                            asp-controller="Posts"
+                            class="btn btn-danger"
+                            onclick="return confirm('Bạn có chắc chắn muốn xoá bài post này không?')"
+                            >
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>*@
+
+                        @* <a asp-area="Admin"
+                            asp-controller="Posts"
+                            asp-action="DeletePost"
+                            asp-route-id="@post.Id"
+                            class="btn btn-danger"
+                            onclick="return confirm('Bạn có chắc chắn muốn xoá bài post này không?')">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>*@
+
+                        <a  asp-area="Admin"
+                            asp-controller="Posts"
+                            asp-action="DeletePost"
+                            asp-route-id="@post.Id"
+                            class="btn btn-danger"
+                            OnClick="return confirm('Bạn có chắc chắn là muốn xóa bài viết này không')">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>
                     </td>
                 </tr>
             }
@@ -62,3 +139,21 @@ else
     </h1>
 }
 
+<partial name="_Pager" model="@postsList" />
+
+@*@section scripts{
+    <script>
+        function OnDeleteClickEvent(postId) {
+            //var alert = confirm("Bạn có thực sự muốn xóa bài viết này không?");
+            if (confirm("Bạn có thực sự muốn xóa bài viết này không?")) {
+                    // Post về controller theo lựa chọn
+                    $.post('@Url.Action("DeletePost")', { id: postId }, function()
+                    {
+                        locaion.reload();
+                    });
+                    
+            }
+        }
+    </script>
+}
+*@

@@ -3,12 +3,14 @@ using FluentValidation.AspNetCore;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Drawing.Printing;
 using TatBlog.Core.DTO;
 using TatBlog.Core.Entities;
 using TatBlog.Services.Blogs;
 using TatBlog.Services.Media;
 using TatBlog.WebApp.Areas.Admin.Models;
 using TatBlog.WebApp.Validations;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace TatBlog.WebApp.Areas.Admin.Controllers
 {
@@ -68,7 +70,11 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             });
         }
 
-        public async Task<IActionResult> Index(PostFilterModel model)
+        //[Area("Admin")]
+        public async Task<IActionResult> Index(
+            PostFilterModel model,
+            int pageNumber = 1,
+            int pageSize = 10)
         {
             //var postQuery = new PostQuery()
             //{
@@ -85,7 +91,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             _logger.LogInformation("Lấy danh sách bài viết từ CSDL");
 
             ViewBag.PostsList = await _blogRepository
-                .GetPagedPostsAsync(postQuery, 1, 10);
+                .GetPagedPostsAsync(postQuery, pageNumber, pageSize);
 
             _logger.LogInformation("Chuẩn bị dữ liệu cho ViewModel");
 
@@ -228,6 +234,18 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             return slugExisted
                 ? Json("$Slug '{urlSlug}' đã được sử dụng")
                 :Json(true);
+        }
+
+        public async Task<IActionResult> ChangePostPublishedState(int id)
+        {
+            await _blogRepository.TogglePublishedFlagAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            await _blogRepository.DeletePostAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
