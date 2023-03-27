@@ -2,6 +2,77 @@
     ViewData["PageTitle"] = "Liên hệ";
 }
 
-<h1>
-    Đây là trang liên hệ
-</h1>
+
+<div class="px-5 py-3">
+    <h2 class="text-primary">
+       <i class="fa fa-phone" aria-hidden="true"></i>
+       Liên hệ với chúng tôi
+    </h2>
+
+@*    <img src="@imageUrl"
+         class="rounded img-fluid my-2"
+         alt="@Model.Title" />*@
+
+    <p class="fs-5 my-3">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor felis sit amet nibh tincidunt egestas. Morbi aliquet libero sed lectus malesuada, nec congue sem tristique. Curabitur eu ante et lorem porta malesuada ac non sapien. Phasellus eget turpis tellus. Nulla et viverra nibh. Integer lacinia nisl quis elit auctor pellentesque in et eros. Fusce eget ipsum blandit, interdum elit nec, condimentum neque.
+    </p>
+
+    <p class="my-1 card-text">
+        <small class="text-muted">
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            Địa chỉ:
+        </small>
+        <span class="text-primary">
+            Nulla facilisi. Nullam rutrum in ante gravida tincidunt
+        </span>
+    </p>
+
+    <p class="my-1 card-text">
+        <small class="text-muted">
+            <i class="fa fa-headphones" aria-hidden="true"></i>
+            Hotline:
+        </small>
+        <span class="text-primary">
+            Nulla facilisi. Nullam rutrum in ante gravida tincidunt
+        </span>
+    </p>
+
+    <p class="fs-5 my-3">
+        Quisque lacus ligula, commodo eget volutpat ac, facilisis ut dolor. Nunc ante mi, commodo in est a, luctus lacinia diam. Nunc ultricies congue lacinia. Cras eu luctus libero. Pellentesque convallis nulla quis condimentum convallis. Praesent fringilla eleifend lorem, nec tempus orci sagittis vel. Quisque et placerat ante. Aenean suscipit augue vel ex luctus tincidunt. Nulla tincidunt, turpis vitae condimentum dignissim, erat nunc cursus felis, et condimentum orci velit ut massa. Sed porttitor, arcu in feugiat cursus, velit erat bibendum arcu, a tempor lectus metus fermentum ligula. Proin id lacus tortor. Curabitur lobortis, dui at blandit tempus, dolor nulla suscipit odio, in dapibus risus sapien ac dui.
+    </p>
+
+    <section class="text-center">
+
+        <div class="row d-flex justify-content-between">
+            <div class="col-lg-6">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12094.57348593182!2d-74.00599512526003!3d40.72586666928451!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2598f988156a9%3A0xd54629bdf9d61d68!2sBroadway-Lafayette%20St!5e0!3m2!1spl!2spl!4v1624523797308!5m2!1spl!2spl"
+                        class="h-100 w-100" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+
+            <div class="col-lg-5">
+                <h3 class="mb-4 text-primary">Gửi ý kiến</h3>
+
+                <form>
+                    <div class="row flex-column">
+                        <input type="text" class="form-control mb-3"
+                               placeholder="Nhập gmail"
+                               aria-label="Enter keyword" />
+
+                        <input type="text" class="form-control mb-3"
+                               placeholder="Nhập chủ đề"
+                               aria-label="Enter keyword" />
+
+                        <textarea type="text"
+                                  placeholder="Nhập nội dung"
+                                  rows="5"
+                                  class="form-control mb-3"></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-block">Gửi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</div>

@@ -1,0 +1,72 @@
+﻿@model Post
+
+@{
+    ViewData["PageTitle"] = "Bài viết theo tác giả";
+    var imageUrl = string.IsNullOrWhiteSpace(Model.ImageUrl)
+           ? "/images/image01.jpg"
+           : $"/{Model.ImageUrl}";
+}
+
+<div class="px-5 py-3">
+    <h1 class="fs-6">
+        <small class="text-muted">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            Tag:
+        </small>
+        <span class="tag-list mb-3">
+            <partial name="_TagList" model="@Model.Tags" />
+        </span>
+    </h1>
+    <h2 class="text-primary">
+        @Model.Title
+    </h2>
+    <p class="mt-1 mb-3 card-text">
+        <small class="text-muted">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            Tác giả:
+        </small>
+        <span class="text-primary">
+            <a asp-controller="Blog"
+               asp-action="Author"
+               asp-route-slug="@Model.Author.UrlSlug"
+               class="text-primary no-underline"
+               title="@Model.Title">
+                @Model.Author.FullName
+            </a>
+        </span>
+        <small class="ps-2 text-muted">
+            <i class="fa fa-book" aria-hidden="true"></i>
+            Chủ đề:
+        </small>
+        <span class="text-primary">
+            <a asp-controller="Blog"
+               asp-action="Category"
+               asp-route-slug=@Model.Category.UrlSlug
+               class="text-primary no-underline"
+               title="@Model.Title">
+                @Model.Category.Name
+            </a>
+        </span>
+
+        <small class="ps-2 text-muted">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            Số lượt xem:
+        </small>
+        <span class="text-primary">
+            @Model.ViewCount
+        </span>
+    </p>
+
+    <img src="@imageUrl"
+         class="rounded img-fluid my-2"
+         alt="@Model.Title" />
+
+    <p class="fs-5 my-3">
+        @Html.Raw(Model.Description)
+    </p>
+
+    <p class="fs-6 text-muted text-end">
+        <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+        Ngày xuất bản: @Model.PostedDate
+    </p>
+</div>

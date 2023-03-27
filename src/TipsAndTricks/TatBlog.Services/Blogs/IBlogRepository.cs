@@ -17,6 +17,7 @@ namespace TatBlog.Services.Blogs
         Task<Post> GetPostAsync(
             int year,
             int month,
+            int day,
             string slug,
             CancellationToken cancellationToken = default)
         {
@@ -86,7 +87,7 @@ namespace TatBlog.Services.Blogs
         }
 
         //k.Đếm số lượng bài viết trong N tháng gần nhất
-        List<NumberPostByMonth> GetNumberPostByMonthAsync(int numMonth)
+        List<MonthlyPostCountItem> GetNumberPostByMonthAsync(int numMonth)
         {
             throw new NotImplementedException();
         }
@@ -259,6 +260,41 @@ namespace TatBlog.Services.Blogs
 
         Task DeleteTagAsync(
          int tagId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IList<TagItem>> GetTagsAsync(
+            CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IList<Post>> GetRandomArticlesAsync(
+            int numPosts, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IList<Author>> GetPopularAuthorAsync(
+           int numAuthors,
+           CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IList<MonthlyPostCountItem>> CountMonthlyPostsAsync(
+            CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IPagedList<Post>> GetPostAsync(
+            int year,
+            int month,
+            int pageNumber = 1,
+            int pageSize = 10,
+            CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
