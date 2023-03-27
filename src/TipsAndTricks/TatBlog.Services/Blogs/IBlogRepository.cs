@@ -180,5 +180,87 @@ namespace TatBlog.Services.Blogs
         {
             throw new NotImplementedException();
         }
+
+        Task<IPagedList<Category>> GetPagedCategoriesAsync(
+           int pageNumber = 1,
+           int pageSize = 10,
+           CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Category> GetCategoryByIdAsync(int categoryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Category> CreateOrUpdateCategoryAsync(
+           Category category, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task DeleteCategoryAsync(
+          int categoryId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task ToggleShowOnMenuFlagAsync(
+            int id,
+            CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IPagedList<Author>> GetPagedAuthorsAsync(
+         int pageNumber = 1,
+         int pageSize = 10,
+         CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Author> GetAuthorByIdAsync(int authorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Author> CreateOrUpdateAuthorAsync(
+         Author author, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task DeleteAuthorAsync(
+           int authorId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IPagedList<Tag>> GetPagedTagsAsync(
+          int pageNumber = 1,
+          int pageSize = 10,
+          CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Tag> GetTagByIdAsync(int tagId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Tag> CreateOrUpdateTagAsync(
+         Tag tag, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task DeleteTagAsync(
+         int tagId, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

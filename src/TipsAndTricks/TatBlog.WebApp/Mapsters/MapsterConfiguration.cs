@@ -19,13 +19,30 @@ namespace TatBlog.WebApp.Mapster
             config.NewConfig<PostEditModel, Post>()
                 .Ignore(dest => dest.Id)
                 .Ignore(dest => dest.ImageUrl);
-            
+
+            config.NewConfig<CategoryEditModel, Category>()
+                .Ignore(dest => dest.Id);
+
+            config.NewConfig<AuthorEditModel, Author>()
+                .Ignore(dest => dest.Id)
+                .Ignore(dest => dest.ImageUrl);
+
+            config.NewConfig<TagEditModel, Tag>()
+                .Ignore(dest => dest.Id);
+
             config.NewConfig<Post, PostEditModel>()
                 .Map(dest => dest.SelectedTags, src => 
                       string.Join("\r\n", src.Tags.Select(x => x.Name)))
                 .Ignore(dest => dest.CategoryList)
                 .Ignore(dest => dest.AuthorList)
                 .Ignore(dest => dest.ImageFile);
+
+            config.NewConfig<Category, CategoryEditModel>();
+
+            config.NewConfig<Author, AuthorEditModel>()
+               .Ignore(dest => dest.ImageFile);
+
+            config.NewConfig<Tag, TagEditModel>();
 
         }
     }
