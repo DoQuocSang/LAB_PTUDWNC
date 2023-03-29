@@ -6,7 +6,7 @@
 
         public string UrlSlug { get; set; }
 
-        public DateOnly JoinedDate { get; set; }
+        public DateTime JoinedDate { get; set; }
 
         public string Email { get; set; }
 
