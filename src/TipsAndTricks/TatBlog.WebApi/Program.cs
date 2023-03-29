@@ -1,6 +1,7 @@
 using NLog;
 using NLog.Web;
 using TatBlog.WebApi.Extensions;
+using TatBlog.WebApi.Mapsters;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -14,7 +15,8 @@ try
             .ConfigureCors()
             .ConfigureNLog()
             .ConfigureServices()
-            .ConfigureSwaggerOpenApi();
+            .ConfigureSwaggerOpenApi()
+            .ConfigureMapster();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
