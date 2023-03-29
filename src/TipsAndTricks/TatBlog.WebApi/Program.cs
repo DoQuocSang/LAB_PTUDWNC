@@ -1,5 +1,6 @@
 using NLog;
 using NLog.Web;
+using TatBlog.WebApi.Endpoints;
 using TatBlog.WebApi.Extensions;
 using TatBlog.WebApi.Mapsters;
 using TatBlog.WebApi.Validations;
@@ -50,6 +51,8 @@ try
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        app.MapAuthorEndpoints();
 
         app.Run();
     }

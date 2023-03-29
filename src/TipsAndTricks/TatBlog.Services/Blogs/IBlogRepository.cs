@@ -298,5 +298,10 @@ namespace TatBlog.Services.Blogs
         {
             throw new NotImplementedException();
         }
+
+        Task<IPagedList<T>> GetPagedPostsAsync<T>(
+           PostQuery condition,
+           IPagingParams pagingParams,
+           Func<IQueryable<Post>, IQueryable<T>> mapper);
     }
 }
