@@ -12,17 +12,20 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
     public class AuthorsController : Controller
     {
         private readonly IBlogRepository _blogRepository;
+        private readonly IAuthorRepository _authorRepository;
         private readonly IMapper _mapper;
         private readonly IMediaManager _mediaManager;
 
         public AuthorsController(
            IBlogRepository blogRepository,
            IMediaManager mediaManager,
-           IMapper mapper)
+           IMapper mapper,
+           IAuthorRepository authorRepository)
         {
             _blogRepository = blogRepository;
             _mapper = mapper;
             _mediaManager = mediaManager;
+            _authorRepository = authorRepository;
         }
 
         public async Task<IActionResult> Index(
@@ -42,7 +45,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             //var postQuery = _mapper.Map<PostQuery>(model);
 
 
-            ViewBag.AuthorsList = await _blogRepository
+            ViewBag.AuthorsList = await _authorRepository
                 .GetPagedAuthorsAsync(pageNumber, pageSize);
 
             //await PopulatePostFilterModelAsync(model);
@@ -54,7 +57,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id = 0)
         {
             var author = id > 0
-                ? await _blogRepository.GetAuthorByIdAsync(id)
+                ? await _authorRepository.GetAuthorByIdAsync(id)
                 : null;
 
             var model = author == null
@@ -73,7 +76,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             }
 
             var author = model.Id > 0
-                ? await _blogRepository.GetAuthorByIdAsync(model.Id) : null;
+                ? await _authorRepository.GetAuthorByIdAsync(model.Id) : null;
 
 
             if (author == null)
@@ -101,14 +104,14 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
                 }
             }
 
-            await _blogRepository.CreateOrUpdateAuthorAsync(author);
+            await _authorRepository.CreateOrUpdateAuthorAsync(author);
 
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> DeleteAuthor(int id)
         {
-            await _blogRepository.DeleteAuthorAsync(id);
+            await _authorRepository.DeleteAuthorAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

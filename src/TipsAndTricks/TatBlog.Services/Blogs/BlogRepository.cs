@@ -102,16 +102,16 @@ namespace TatBlog.Services.Blogs
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<IList<Author>> GetPopularAuthorAsync(
-            int numAuthors,
-            CancellationToken cancellationToken = default)
-        {
-            return await _context.Set<Author>()
-                .Include(x => x.Posts)
-                .OrderByDescending(p => p.Posts.Count)
-                .Take(numAuthors)
-                .ToListAsync(cancellationToken);
-        }
+        //public async Task<IList<Author>> GetPopularAuthorAsync(
+        //    int numAuthors,
+        //    CancellationToken cancellationToken = default)
+        //{
+        //    return await _context.Set<Author>()
+        //        .Include(x => x.Posts)
+        //        .OrderByDescending(p => p.Posts.Count)
+        //        .Take(numAuthors)
+        //        .ToListAsync(cancellationToken);
+        //}
 
 
         //Kiểm tra tên định danh bài viết đã có hay chưa
@@ -138,23 +138,23 @@ namespace TatBlog.Services.Blogs
         }
 
         //Lấy danh sách tác giả
-        public async Task<IList<AuthorItem>> GetAuthorsAsync(CancellationToken cancellationToken = default)
-        {
-            return await _context.Set<Author>()
-                .OrderBy(a => a.FullName)
-                .Select(a => new AuthorItem()
-                {
-                    Id = a.Id,
-                    FullName = a.FullName,
-                    Email = a.ToString(),
-                    JoinedDate = a.JoinedDate,
-                    ImageUrl = a.ImageUrl,
-                    UrlSlug = a.UrlSlug,
-                    Notes = a.Notes,
-                    PostCount = a.Posts.Count(p => p.Published)
-                })
-                .ToListAsync(cancellationToken);
-        }
+        //public async Task<IList<AuthorItem>> GetAuthorsAsync(CancellationToken cancellationToken = default)
+        //{
+        //    return await _context.Set<Author>()
+        //        .OrderBy(a => a.FullName)
+        //        .Select(a => new AuthorItem()
+        //        {
+        //            Id = a.Id,
+        //            FullName = a.FullName,
+        //            Email = a.ToString(),
+        //            JoinedDate = a.JoinedDate,
+        //            ImageUrl = a.ImageUrl,
+        //            UrlSlug = a.UrlSlug,
+        //            Notes = a.Notes,
+        //            PostCount = a.Posts.Count(p => p.Published)
+        //        })
+        //        .ToListAsync(cancellationToken);
+        //}
 
         //Lấy danh sách chuyên mục và số lượng bài viết nằm từng chuyên mục/chủ đề
         public async Task<IList<CategoryItem>> GetCategoriesAsync(
@@ -570,57 +570,57 @@ namespace TatBlog.Services.Blogs
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IPagedList<Author>> GetPagedAuthorsAsync(
-         int pageNumber = 1,
-         int pageSize = 10,
-         CancellationToken cancellationToken = default)
-        {
-            //var pagingParams = new PagingParams
-            //{
-            //    PageNumber = 1, //Số thứ tự của trang
-            //    PageSize = 6, //Số mẫu tin trong 1 trang
-            //    SortColumn = "Name",
-            //    SortOrder = "ASC"
-            //};
-            var authorQuery = _context.Set<Author>()
-                .Include(x => x.Posts);
+        //public async Task<IPagedList<Author>> GetPagedAuthorsAsync(
+        // int pageNumber = 1,
+        // int pageSize = 10,
+        // CancellationToken cancellationToken = default)
+        //{
+        //    //var pagingParams = new PagingParams
+        //    //{
+        //    //    PageNumber = 1, //Số thứ tự của trang
+        //    //    PageSize = 6, //Số mẫu tin trong 1 trang
+        //    //    SortColumn = "Name",
+        //    //    SortOrder = "ASC"
+        //    //};
+        //    var authorQuery = _context.Set<Author>()
+        //        .Include(x => x.Posts);
 
-            return await authorQuery.ToPagedListAsync(
-                pageNumber, pageSize,
-                nameof(Author.FullName), "ASC",
-                cancellationToken);
-        }
+        //    return await authorQuery.ToPagedListAsync(
+        //        pageNumber, pageSize,
+        //        nameof(Author.FullName), "ASC",
+        //        cancellationToken);
+        //}
 
-        public async Task<Author> GetAuthorByIdAsync(int authorId)
-        {
-            return await _context.Set<Author>().FindAsync(authorId);
-        }
+        //public async Task<Author> GetAuthorByIdAsync(int authorId)
+        //{
+        //    return await _context.Set<Author>().FindAsync(authorId);
+        //}
 
-        public async Task<Author> CreateOrUpdateAuthorAsync(
-          Author author, CancellationToken cancellationToken = default)
-        {
-            if (author.Id > 0)
-            {
-                _context.Set<Author>().Update(author);
-            }
-            else
-            {
-                _context.Set<Author>().Add(author);
-            }
+        //public async Task<Author> CreateOrUpdateAuthorAsync(
+        //  Author author, CancellationToken cancellationToken = default)
+        //{
+        //    if (author.Id > 0)
+        //    {
+        //        _context.Set<Author>().Update(author);
+        //    }
+        //    else
+        //    {
+        //        _context.Set<Author>().Add(author);
+        //    }
 
-            await _context.SaveChangesAsync(cancellationToken);
+        //    await _context.SaveChangesAsync(cancellationToken);
 
-            return author;
-        }
+        //    return author;
+        //}
 
-        public async Task DeleteAuthorAsync(
-            int authorId, CancellationToken cancellationToken = default)
-        {
-            var author = await _context.Set<Author>().FindAsync(authorId);
+        //public async Task DeleteAuthorAsync(
+        //    int authorId, CancellationToken cancellationToken = default)
+        //{
+        //    var author = await _context.Set<Author>().FindAsync(authorId);
 
-            _context.Set<Author>().Remove(author);
-            await _context.SaveChangesAsync(cancellationToken);
-        }
+        //    _context.Set<Author>().Remove(author);
+        //    await _context.SaveChangesAsync(cancellationToken);
+        //}
 
         public async Task<IPagedList<Tag>> GetPagedTagsAsync(
            int pageNumber = 1,

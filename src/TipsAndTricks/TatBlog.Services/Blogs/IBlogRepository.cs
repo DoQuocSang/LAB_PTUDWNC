@@ -115,10 +115,10 @@ namespace TatBlog.Services.Blogs
         }
 
         //Lấy danh sách chuyên mục
-        Task<IList<AuthorItem>> GetAuthorsAsync(CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<IList<AuthorItem>> GetAuthorsAsync(CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //Lấy danh sách bài viết theo truy vấn
         Task<IList<Post>> GetPostsAsync(
@@ -214,30 +214,30 @@ namespace TatBlog.Services.Blogs
             throw new NotImplementedException();
         }
 
-        Task<IPagedList<Author>> GetPagedAuthorsAsync(
-         int pageNumber = 1,
-         int pageSize = 10,
-         CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<IPagedList<Author>> GetPagedAuthorsAsync(
+        // int pageNumber = 1,
+        // int pageSize = 10,
+        // CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        Task<Author> GetAuthorByIdAsync(int authorId)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<Author> GetAuthorByIdAsync(int authorId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        Task<Author> CreateOrUpdateAuthorAsync(
-         Author author, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<Author> CreateOrUpdateAuthorAsync(
+        // Author author, CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        Task DeleteAuthorAsync(
-           int authorId, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //Task DeleteAuthorAsync(
+        //   int authorId, CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         Task<IPagedList<Tag>> GetPagedTagsAsync(
           int pageNumber = 1,
@@ -276,12 +276,12 @@ namespace TatBlog.Services.Blogs
             throw new NotImplementedException();
         }
 
-        Task<IList<Author>> GetPopularAuthorAsync(
-           int numAuthors,
-           CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<IList<Author>> GetPopularAuthorAsync(
+        //   int numAuthors,
+        //   CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         Task<IList<MonthlyPostCountItem>> CountMonthlyPostsAsync(
             CancellationToken cancellationToken = default)
