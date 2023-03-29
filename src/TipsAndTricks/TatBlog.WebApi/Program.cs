@@ -1,5 +1,6 @@
 using NLog;
 using NLog.Web;
+using TatBlog.WebApi.Extensions;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -8,36 +9,46 @@ logger.Debug("init main");
 try
 {
     var builder = WebApplication.CreateBuilder(args);
-
-    // Add services to the container.
-    builder.Services.AddControllersWithViews();
-
-    // NLog: Setup NLog for Dependency injection
-    builder.Logging.ClearProviders();
-    builder.Host.UseNLog();
-
-    var app = builder.Build();
-
-    // Configure the HTTP request pipeline.
-    if (!app.Environment.IsDevelopment())
     {
-        app.UseExceptionHandler("/Home/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-        app.UseHsts();
+        builder
+            .ConfigureCors()
+            .ConfigureNLog()
+            .ConfigureServices()
+            .ConfigureSwaggerOpenApi();
+
+        // Add services to the container.
+        builder.Services.AddControllersWithViews();
+
+        // NLog: Setup NLog for Dependency injection
+        builder.Logging.ClearProviders();
+        builder.Host.UseNLog();
     }
+  
+    var app = builder.Build();
+    {
+        app.SetupRequestPipeline();
 
-    app.UseHttpsRedirection();
-    app.UseStaticFiles();
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
 
-    app.UseRouting();
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
 
-    app.UseAuthorization();
+        app.UseRouting();
 
-    app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+        app.UseAuthorization();
 
-    app.Run();
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        app.Run();
+    }
 }
 catch (Exception exception)
 {
