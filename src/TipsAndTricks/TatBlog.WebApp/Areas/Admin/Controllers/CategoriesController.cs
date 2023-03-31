@@ -13,14 +13,17 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
     public class CategoriesController : Controller
     {
         private readonly IBlogRepository _blogRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
 
         public CategoriesController(
            IBlogRepository blogRepository,
-           IMapper mapper)
+           IMapper mapper,
+           ICategoryRepository categoryRepository)
         {
             _blogRepository = blogRepository;
             _mapper = mapper;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<IActionResult> Index(
@@ -40,7 +43,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             //var postQuery = _mapper.Map<PostQuery>(model);
 
 
-            ViewBag.CategoriesList = await _blogRepository
+            ViewBag.CategoriesList = await _categoryRepository
                 .GetPagedCategoriesAsync(pageNumber, pageSize);
 
             //await PopulatePostFilterModelAsync(model);
@@ -52,7 +55,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id = 0)
         {
             var category = id > 0
-                ? await _blogRepository.GetCategoryByIdAsync(id)
+                ? await _categoryRepository.GetCategoryByIdAsync(id)
                 : null;
 
             var model = category == null
@@ -71,7 +74,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             }
 
             var category = model.Id > 0
-                ? await _blogRepository.GetCategoryByIdAsync(model.Id) : null;
+                ? await _categoryRepository.GetCategoryByIdAsync(model.Id) : null;
 
             if (category == null)
             {
@@ -83,7 +86,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
                 _mapper.Map(model, category);
             }
 
-            await _blogRepository.CreateOrUpdateCategoryAsync(category);
+            await _categoryRepository.CreateOrUpdateCategoryAsync(category);
 
             return RedirectToAction(nameof(Index));
         }
@@ -96,7 +99,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
 
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            await _blogRepository.DeleteCategoryAsync(id);
+            await _categoryRepository.DeleteCategoryAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }
