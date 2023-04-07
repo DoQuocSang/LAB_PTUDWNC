@@ -49,13 +49,13 @@ namespace TatBlog.Services.Blogs
             throw new NotImplementedException();
         }
 
-        //Lấy danh sách chuyên mục và số lượng bài viết nằm từng chuyên mục/chủ đề
-        Task<IList<CategoryItem>> GetCategoriesAsync(
-            bool showOnMenu = false,
-            CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        ////Lấy danh sách chuyên mục và số lượng bài viết nằm từng chuyên mục/chủ đề
+        //Task<IList<CategoryItem>> GetCategoriesAsync(
+        //    bool showOnMenu = false,
+        //    CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //Lấy danh sách các từ khóa/thẻ và phân trang theo các tham số pagingParams
         Task<IPagedList<TagItem>> GetPagedTagsAsync(
@@ -73,12 +73,12 @@ namespace TatBlog.Services.Blogs
         }
 
         //Lấy và phân trang danh sách chuyên mục
-        Task<IPagedList<CategoryItem>> GetPagedCategoriesAsync(
-           IPagingParams pagingParams,
-           CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<IPagedList<CategoryItem>> GetPagedCategoriesAsync(
+        //   IPagingParams pagingParams,
+        //   CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //k.Lấy danh sách ngày theo N tháng tính từ tháng hiện tại
         List<DateTime> GetDateListByMonth(int num)
@@ -182,30 +182,30 @@ namespace TatBlog.Services.Blogs
             throw new NotImplementedException();
         }
 
-        Task<IPagedList<Category>> GetPagedCategoriesAsync(
-           int pageNumber = 1,
-           int pageSize = 10,
-           CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<IPagedList<Category>> GetPagedCategoriesAsync(
+        //   int pageNumber = 1,
+        //   int pageSize = 10,
+        //   CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        Task<Category> GetCategoryByIdAsync(int categoryId)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<Category> GetCategoryByIdAsync(int categoryId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        Task<Category> CreateOrUpdateCategoryAsync(
-           Category category, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //Task<Category> CreateOrUpdateCategoryAsync(
+        //   Category category, CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        Task DeleteCategoryAsync(
-          int categoryId, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //Task DeleteCategoryAsync(
+        //  int categoryId, CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         Task ToggleShowOnMenuFlagAsync(
             int id,
@@ -303,5 +303,24 @@ namespace TatBlog.Services.Blogs
            PostQuery condition,
            IPagingParams pagingParams,
            Func<IQueryable<Post>, IQueryable<T>> mapper);
+
+        Task<IPagedList<PostItem>> GetPagedPostsAsync(
+             IPagingParams pagingParams,
+             string name = null,
+             CancellationToken cancellationToken = default);
+
+        Task<Post> GetCachedPostByIdAsync(int postId);
+
+        Task<IPagedList<Post>> GetRandomPostsAsync(
+          int numPosts,
+          int pageSize = 30,
+          int pageNumber = 1,
+          CancellationToken cancellationToken = default);
+
+        Task<IPagedList<PostItem>> GetPopularPostsAsync(
+          int numPosts,
+          int pageSize = 30,
+          int pageNumber = 1,
+        CancellationToken cancellationToken = default);
     }
 }

@@ -53,6 +53,8 @@ try
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
         app.MapAuthorEndpoints();
+        app.MapCategoryEndpoints();
+        app.MapPostEndpoints();
 
         app.Run();
     }
