@@ -740,6 +740,9 @@ namespace TatBlog.Services.Blogs
             CancellationToken cancellationToken = default)
         {
             return await _context.Set<Post>()
+                .Include(x => x.Tags)
+                .Include(x => x.Category)
+                .Include(x => x.Author)
                 .AsNoTracking()
                 .WhereIf(!string.IsNullOrWhiteSpace(name),
                     x => x.Title.Contains(name))
@@ -752,6 +755,9 @@ namespace TatBlog.Services.Blogs
                     ShortDescription = x.ShortDescription,
                     Description = x.Description,
                     Published = x.Published,
+                    Category = x.Category,
+                    Tags = x.Tags,
+                    Author = x.Author
                 })
                 .ToPagedListAsync(pagingParams, cancellationToken);
         }
@@ -767,18 +773,36 @@ namespace TatBlog.Services.Blogs
                 });
         }
 
-        public async Task<IPagedList<Post>> GetRandomPostsAsync(
+        public async Task<IPagedList<PostItem>> GetRandomPostsAsync(
           int numPosts,
           int pageSize = 30,
           int pageNumber = 1,
           CancellationToken cancellationToken = default)
         {
             return await _context.Set<Post>()
+                .Include(x => x.Tags)
+                .Include(x => x.Category)
+                .Include(x => x.Author)
                 .OrderBy(x => Guid.NewGuid())
                 .Take(numPosts)
+                .AsNoTracking()
+                .Select(x => new PostItem()
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    UrlSlug = x.UrlSlug,
+                    Meta = x.Meta,
+                    ShortDescription = x.ShortDescription,
+                    Description = x.Description,
+                    Published = x.Published,
+                    Category = x.Category,
+                    Tags = x.Tags,
+                    Author = x.Author
+                })
                 .ToPagedListAsync(pageNumber, pageSize,
                 nameof(Post.Title), "ASC",
                 cancellationToken);
+
         }
 
         public async Task<IPagedList<PostItem>> GetPopularPostsAsync(

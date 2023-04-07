@@ -311,7 +311,7 @@ namespace TatBlog.Services.Blogs
 
         Task<Post> GetCachedPostByIdAsync(int postId);
 
-        Task<IPagedList<Post>> GetRandomPostsAsync(
+        Task<IPagedList<PostItem>> GetRandomPostsAsync(
           int numPosts,
           int pageSize = 30,
           int pageNumber = 1,

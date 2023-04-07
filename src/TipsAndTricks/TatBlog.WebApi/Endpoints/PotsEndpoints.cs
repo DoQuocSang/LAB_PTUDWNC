@@ -33,7 +33,7 @@ namespace TatBlog.WebApi.Endpoints
 
             routeGroupBuilder.MapGet("/random/{limit}", GetRandomPosts)
                .WithName("GetRandomPosts")
-               .Produces<ApiResponse<PaginationResult<Post>>>();
+               .Produces<ApiResponse<PaginationResult<PostItem>>>();
 
             //routeGroupBuilder.MapGet("/archives/{limit}", GetPosts)
             //   .WithName("GetPosts")
@@ -113,7 +113,7 @@ namespace TatBlog.WebApi.Endpoints
                 .GetRandomPostsAsync(numPosts);
 
             var paginationResult =
-                new PaginationResult<Post>(postsList);
+                new PaginationResult<PostItem>(postsList);
 
             return Results.Ok(ApiResponse.Success(paginationResult));
         }
