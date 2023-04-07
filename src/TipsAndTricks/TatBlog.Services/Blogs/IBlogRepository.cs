@@ -308,5 +308,19 @@ namespace TatBlog.Services.Blogs
              IPagingParams pagingParams,
              string name = null,
              CancellationToken cancellationToken = default);
+
+        Task<Post> GetCachedPostByIdAsync(int postId);
+
+        Task<IPagedList<Post>> GetRandomPostsAsync(
+          int numPosts,
+          int pageSize = 30,
+          int pageNumber = 1,
+          CancellationToken cancellationToken = default);
+
+        Task<IPagedList<PostItem>> GetPopularPostsAsync(
+          int numPosts,
+          int pageSize = 30,
+          int pageNumber = 1,
+        CancellationToken cancellationToken = default);
     }
 }

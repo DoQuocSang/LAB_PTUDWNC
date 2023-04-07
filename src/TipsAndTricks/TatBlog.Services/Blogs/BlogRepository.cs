@@ -12,17 +12,19 @@ using TatBlog.Data.Contexts;
 using TatBlog.Services.Extensions;
 using static System.Net.Mime.MediaTypeNames;
 using SlugGenerator;
-
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TatBlog.Services.Blogs
 {
     public class BlogRepository : IBlogRepository
     {
         private readonly BlogDbContext _context;
+        private readonly IMemoryCache _memoryCache;
 
-        public BlogRepository(BlogDbContext context)
+        public BlogRepository(BlogDbContext context, IMemoryCache memoryCache)
         {
             _context = context;
+            _memoryCache = memoryCache;
         }
 
         //Tìm bài viết có định danh slug và được đăng vào tháng month năm year
@@ -382,6 +384,11 @@ namespace TatBlog.Services.Blogs
             if (!string.IsNullOrWhiteSpace(condition.TagSlug))
             {
                 posts = posts.Where(x => x.Tags.Any(t => t.UrlSlug == condition.TagSlug));
+            }
+
+            if (!string.IsNullOrWhiteSpace(condition.PostSlug))
+            {
+                posts = posts.Where(x => x.UrlSlug == condition.PostSlug);
             }
 
             if (!string.IsNullOrWhiteSpace(condition.Keyword))
@@ -748,5 +755,62 @@ namespace TatBlog.Services.Blogs
                 })
                 .ToPagedListAsync(pagingParams, cancellationToken);
         }
+
+        public async Task<Post> GetCachedPostByIdAsync(int postId)
+        {
+            return await _memoryCache.GetOrCreateAsync(
+                $"post.by-id.{postId}",
+                async (entry) =>
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
+                    return await GetPostByIdAsync(postId);
+                });
+        }
+
+        public async Task<IPagedList<Post>> GetRandomPostsAsync(
+          int numPosts,
+          int pageSize = 30,
+          int pageNumber = 1,
+          CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Post>()
+                .OrderBy(x => Guid.NewGuid())
+                .Take(numPosts)
+                .ToPagedListAsync(pageNumber, pageSize,
+                nameof(Post.Title), "ASC",
+                cancellationToken);
+        }
+
+        public async Task<IPagedList<PostItem>> GetPopularPostsAsync(
+         int numPosts,
+         int pageSize = 30,
+         int pageNumber = 1,
+         CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Post>()
+                .Include(x => x.Tags)
+                .Include(x => x.Category)
+                .Include(x => x.Author)
+                .OrderByDescending(p => p.ViewCount)
+                .Take(numPosts)
+                .AsNoTracking()
+                .Select(x => new PostItem()
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    UrlSlug = x.UrlSlug,
+                    Meta = x.Meta,
+                    ShortDescription = x.ShortDescription,
+                    Description = x.Description,
+                    Published = x.Published,
+                    Category = x.Category,
+                    Tags = x.Tags,
+                    Author = x.Author
+                })
+                .ToPagedListAsync(pageNumber, pageSize,
+                nameof(Post.Title), "DESC",
+                cancellationToken);
+        }
+
     }
 }

@@ -27,15 +27,27 @@ namespace TatBlog.WebApi.Endpoints
                 .WithName("GetPosts")
                 .Produces<ApiResponse<PaginationResult<PostItem>>>();
 
-            //routeGroupBuilder.MapGet("/{id:int}", GetPostDetails)
-            //    .WithName("GetPostById")
-            //    .Produces<ApiResponse<PostItem>>();
+            routeGroupBuilder.MapGet("/featured/{limit}", GetFeaturedPosts)
+                .WithName("GetFeaturedPosts")
+                .Produces<ApiResponse<PaginationResult<PostItem>>>();
 
-            //routeGroupBuilder.MapGet(
-            //        "/byslug/{slug:regex(^[a-z0-9_-]+$)}/posts",
-            //        GetPostsBySlug)
-            //    .WithName("GetPostsBySlug")
-            //    .Produces<ApiResponse<PaginationResult<PostDto>>>();
+            routeGroupBuilder.MapGet("/random/{limit}", GetRandomPosts)
+               .WithName("GetRandomPosts")
+               .Produces<ApiResponse<PaginationResult<Post>>>();
+
+            //routeGroupBuilder.MapGet("/archives/{limit}", GetPosts)
+            //   .WithName("GetPosts")
+            //   .Produces<ApiResponse<PaginationResult<PostItem>>>();
+
+            routeGroupBuilder.MapGet("/{id:int}", GetPostDetails)
+                .WithName("GetPostById")
+                .Produces<ApiResponse<PostItem>>();
+
+            routeGroupBuilder.MapGet(
+                    "/byslug/{slug:regex(^[a-z0-9_-]+$)}",
+                    GetPostsBySlug)
+                .WithName("GetPostsBySlug")
+                .Produces<ApiResponse<PaginationResult<PostDto>>>();
 
             //routeGroupBuilder.MapPost("/", AddPost)
             //    .WithName("AddNewPost")
@@ -80,17 +92,43 @@ namespace TatBlog.WebApi.Endpoints
             return Results.Ok(ApiResponse.Success(paginationResult));
         }
 
+        private static async Task<IResult> GetFeaturedPosts(
+        int numPosts,
+        IBlogRepository blogRepository)
+        {
+            var postsList = await blogRepository
+                .GetPopularPostsAsync(numPosts);
+
+            var paginationResult =
+                new PaginationResult<PostItem>(postsList);
+
+            return Results.Ok(ApiResponse.Success(paginationResult));
+        }
+
+        private static async Task<IResult> GetRandomPosts(
+        int numPosts,
+        IBlogRepository blogRepository)
+        {
+            var postsList = await blogRepository
+                .GetRandomPostsAsync(numPosts);
+
+            var paginationResult =
+                new PaginationResult<Post>(postsList);
+
+            return Results.Ok(ApiResponse.Success(paginationResult));
+        }
+
         private static async Task<IResult> GetPostDetails(
             int id,
-            IAuthorRepository authorRepository,
+            IBlogRepository blogRepository,
             IMapper mapper)
         {
-            var author = await authorRepository.GetCachedAuthorByIdAsync(id);
+            var post = await blogRepository.GetCachedPostByIdAsync(id);
 
-            return author == null
+            return post == null
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                $"không tìm thấy tác giả có mã số {id}"))
-                : Results.Ok(ApiResponse.Success(mapper.Map<AuthorItem>(author)));
+                $"không tìm thấy bài viết có mã số {id}"))
+                : Results.Ok(ApiResponse.Success(mapper.Map<PostItem>(post)));
         }
 
         private static async Task<IResult> GetPostsBySlug(
@@ -100,7 +138,7 @@ namespace TatBlog.WebApi.Endpoints
         {
             var postQuery = new PostQuery()
             {
-                AuthorSlug = slug,
+                PostSlug = slug,
                 PublishedOnly = true
             };
 
