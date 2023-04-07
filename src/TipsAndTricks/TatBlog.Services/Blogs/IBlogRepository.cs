@@ -322,5 +322,11 @@ namespace TatBlog.Services.Blogs
           int pageSize = 30,
           int pageNumber = 1,
         CancellationToken cancellationToken = default);
+
+        Task<IPagedList<PostItem>> GetPagedPostsConvertPostItemAsync(
+        PostQuery condition,
+        int pageNumber = 1,
+        int pageSize = 10,
+        CancellationToken cancellationToken = default);
     }
 }
