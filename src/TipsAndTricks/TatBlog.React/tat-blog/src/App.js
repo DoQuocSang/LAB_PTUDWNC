@@ -1,6 +1,7 @@
 import './App.css';
 import Navbar from './Components/Navbar';
 import Sidebar from './Components/Sidebar';
+import Footer from './Components/Footer';
 import {
   BrowserRouter as Router,
   Routes,
@@ -22,8 +23,10 @@ function App() {
             </div>
           </div>
         </div>
+        <Footer/>
       </Router>
     </div>
+    
   );
 }
 
