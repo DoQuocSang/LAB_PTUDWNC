@@ -21,11 +21,11 @@ namespace TatBlog.WinApp
         {
             //Test danh sách tác giả
             //==================================================
-            //var context = new BlogDbContext();
+            var context = new BlogDbContext();
 
-            //var seeder = new DataSeeder(context);
+            var seeder = new DataSeeder(context);
 
-            //seeder.Initialize();
+            seeder.Initialize();
 
             //var authors = context.Authors.ToList();
 
@@ -137,9 +137,9 @@ namespace TatBlog.WinApp
 
             //Bài tập==========================================
             Console.OutputEncoding = Encoding.Unicode;
-            var context = new BlogDbContext();
+            //var context = new BlogDbContext();
 
-            IBlogRepository blogRepo = new BlogRepository(context);
+            //IBlogRepository blogRepo = new BlogRepository(context);
 
             //1a) Tìm một thẻ (Tag) theo tên định danh (slug) 
             //==================================================

@@ -8,6 +8,8 @@ using TatBlog.Core.Collections;
 using TatBlog.Core.Contracts;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using TatBlog.Core.Entities;
+using TatBlog.Core.DTO;
 
 namespace TatBlog.Services.Extensions
 {
@@ -18,6 +20,23 @@ namespace TatBlog.Services.Extensions
             return condition
                 ? query.Where(predicate)
                 : query;
+        }
+
+        public static IQueryable<PostItem> ProjectToPostItem(this IQueryable<Post> query)
+        {
+            return query.Select(x => new PostItem
+            {
+                Id = x.Id,
+                Title = x.Title,
+                UrlSlug = x.UrlSlug,
+                Meta = x.Meta,
+                ShortDescription = x.ShortDescription,
+                Description = x.Description,
+                Published = x.Published,
+                Category = x.Category,
+                Tags = x.Tags,
+                Author = x.Author
+            });
         }
     }
 }

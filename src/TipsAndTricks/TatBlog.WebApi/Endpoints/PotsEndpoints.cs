@@ -33,7 +33,7 @@ namespace TatBlog.WebApi.Endpoints
 
             routeGroupBuilder.MapGet("/random/{limit}", GetRandomPosts)
                .WithName("GetRandomPosts")
-               .Produces<ApiResponse<PaginationResult<Post>>>();
+               .Produces<ApiResponse<PaginationResult<PostItem>>>();
 
             //routeGroupBuilder.MapGet("/archives/{limit}", GetPosts)
             //   .WithName("GetPosts")
@@ -79,15 +79,44 @@ namespace TatBlog.WebApi.Endpoints
             return app;
         }
 
+        //private static async Task<IResult> GetPosts(
+        //    [AsParameters] PostFilterModel model,
+        //    IBlogRepository blogRepository)
+        //{
+        //    var postsList = await blogRepository
+        //        .GetPagedPostsAsync(model, model.Title);
+
+        //    var paginationResult =
+        //        new PaginationResult<PostItem>(postsList);
+
+        //    return Results.Ok(ApiResponse.Success(paginationResult));
+        //}
+
+        //private static async Task<IResult> GetPosts(
+        //    [AsParameters] PostQuery model,
+        //    IBlogRepository blogRepository)
+        //{
+        //    var postsList = await blogRepository
+        //        .GetPagedPostsConvertPostItemAsync(model);
+
+        //    var paginationResult =
+        //        new PaginationResult<PostItem>(postsList);
+
+        //    return Results.Ok(ApiResponse.Success(paginationResult));
+        //}
+
         private static async Task<IResult> GetPosts(
             [AsParameters] PostFilterModel model,
-            IBlogRepository blogRepository)
+            IBlogRepository blogRepository,
+            IMapper mapper)
         {
+            var query = mapper.Map<PostQuery>(model);
             var postsList = await blogRepository
-                .GetPagedPostsAsync(model, model.Title);
+                .GetPagedPostsConvertPostItemAsync(query, model,
+                posts => posts.ProjectToType<PostDto>());
 
             var paginationResult =
-                new PaginationResult<PostItem>(postsList);
+                new PaginationResult<PostDto>(postsList);
 
             return Results.Ok(ApiResponse.Success(paginationResult));
         }
@@ -113,7 +142,7 @@ namespace TatBlog.WebApi.Endpoints
                 .GetRandomPostsAsync(numPosts);
 
             var paginationResult =
-                new PaginationResult<Post>(postsList);
+                new PaginationResult<PostItem>(postsList);
 
             return Results.Ok(ApiResponse.Success(paginationResult));
         }

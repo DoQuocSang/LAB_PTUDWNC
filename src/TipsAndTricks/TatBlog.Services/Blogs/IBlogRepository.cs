@@ -311,7 +311,7 @@ namespace TatBlog.Services.Blogs
 
         Task<Post> GetCachedPostByIdAsync(int postId);
 
-        Task<IPagedList<Post>> GetRandomPostsAsync(
+        Task<IPagedList<PostItem>> GetRandomPostsAsync(
           int numPosts,
           int pageSize = 30,
           int pageNumber = 1,
@@ -322,5 +322,16 @@ namespace TatBlog.Services.Blogs
           int pageSize = 30,
           int pageNumber = 1,
         CancellationToken cancellationToken = default);
+
+        //Task<IPagedList<PostItem>> GetPagedPostsConvertPostItemAsync(
+        //PostQuery condition,
+        //int pageNumber = 1,
+        //int pageSize = 10,
+        //CancellationToken cancellationToken = default);
+
+        Task<IPagedList<T>> GetPagedPostsConvertPostItemAsync<T>(
+          PostQuery condition,
+          IPagingParams pagingParams,
+          Func<IQueryable<Post>, IQueryable<T>> mapper);
     }
 }
