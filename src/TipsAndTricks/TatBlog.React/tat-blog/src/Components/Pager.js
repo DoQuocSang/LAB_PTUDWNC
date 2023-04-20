@@ -18,7 +18,7 @@ const Pager = ({ postquery, metadata }) => {
             <div className='text-center my-4'>
                 {hasPreviousPage
                     ? <Link
-                        to={`/blog/${actionName}?slug=${slug}&k=${keyword}&p=${pageNumber - 1}&ps=${pageSize}`}
+                        to={`/blog/${actionName}?slug=${slug}&k=${keyword}&PageNumber=${pageNumber - 1}&PageSize=${pageSize}`}
                         className='btn btn-info'>
                         <FontAwesomeIcon icon={faArrowLeft} /> &nbsp;Trang trước.
 
@@ -30,7 +30,7 @@ const Pager = ({ postquery, metadata }) => {
 
                 {hasNextPage
                     ? <Link
-                        to={`/blog/${actionName}?slug=${slug}&k=${keyword}&p=${pageNumber + 1}&ps=${pageSize}`}
+                        to={`/blog/${actionName}?slug=${slug}&k=${keyword}&PageNumber=${pageNumber + 1}&PageSize=${pageSize}`}
                         className='btn btn-info ms-1'>
                         Trang sau&nbsp;
                         <FontAwesomeIcon icon={faArrowRight} />

@@ -15,20 +15,23 @@ const Index = () => {
 
     let query = useQuery(),
         k = query.get('k') ?? '',
-        p = query.get('p') ?? 1,
-        ps = query.get('ps') ?? 10;
+        p = query.get('PageNumber') ?? 1,
+        ps = query.get('PageSize') ?? 10;
 
+    p = parseInt(p, 10);
+    ps = parseInt(ps, 10);
 
     useEffect(() => {
         document.title = 'Trang chủ';
 
-        getPosts().then(data => {
+        getPosts(ps, p).then(data => {
             if (data){
                 setPostsList(data.result.items);
                 setMetadata(data.result.metadata);
             }
             else
                 setPostsList([]);
+            //console.log(data.result.items)
         })
     }, [k, p, ps]);
 

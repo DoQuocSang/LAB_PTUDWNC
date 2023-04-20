@@ -323,10 +323,15 @@ namespace TatBlog.Services.Blogs
           int pageNumber = 1,
         CancellationToken cancellationToken = default);
 
-        Task<IPagedList<PostItem>> GetPagedPostsConvertPostItemAsync(
-        PostQuery condition,
-        int pageNumber = 1,
-        int pageSize = 10,
-        CancellationToken cancellationToken = default);
+        //Task<IPagedList<PostItem>> GetPagedPostsConvertPostItemAsync(
+        //PostQuery condition,
+        //int pageNumber = 1,
+        //int pageSize = 10,
+        //CancellationToken cancellationToken = default);
+
+        Task<IPagedList<T>> GetPagedPostsConvertPostItemAsync<T>(
+          PostQuery condition,
+          IPagingParams pagingParams,
+          Func<IQueryable<Post>, IQueryable<T>> mapper);
     }
 }
