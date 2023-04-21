@@ -23,11 +23,11 @@ const Index = () => {
 
     useEffect(() => {
         document.title = 'Trang chủ';
-
+ 
         getPosts(ps, p).then(data => {
             if (data){
-                setPostsList(data.result.items);
-                setMetadata(data.result.metadata);
+                setPostsList(data.items);
+                setMetadata(data.metadata);
             }
             else
                 setPostsList([]);
